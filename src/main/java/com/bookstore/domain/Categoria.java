@@ -24,8 +24,13 @@ public class Categoria implements Serializable{
 	@OneToMany(mappedBy = "categoria")
 	private List<Livro> livros = new ArrayList();
 
-	public Categoria() {
+	
+	
+	public Categoria(Integer id, String nome, String descricao) {
 		super();
+		this.id = id;
+		this.nome = nome;
+		this.descricao = descricao;
 	}
 
 	public Integer getId() {
@@ -50,6 +55,13 @@ public class Categoria implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public void setLivros(List<Livro> livros) {
+		this.livros = livros;
+	}
+	public List<Livro> getLivros() {
+		return livros;
 	}
 
 	@Override
