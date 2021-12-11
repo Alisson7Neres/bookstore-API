@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableConfigurationProperties
 @EntityScan(basePackages =  {"com.bookstore.domain"})
-@ComponentScan(basePackages = {"com.bookstore.service", "com.bookstore.config"})
+@ComponentScan(basePackages = {"com.bookstore.service", "com.bookstore.config", "com.bookstore.resource"})
 @EnableJpaRepositories(basePackages = {"com.bookstore.repository"})
 @EnableAutoConfiguration
 public class BookstoreApplication {

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Categoria implements Serializable{
 
@@ -22,10 +24,13 @@ public class Categoria implements Serializable{
 	private String descricao;
 
 	@OneToMany(mappedBy = "categoria")
-	private List<Livro> livros = new ArrayList();
+	@JsonIgnoreProperties("categoria")
+	private List<Livro> livros = new ArrayList<>();
+	
+	public Categoria() {
+		super();
+	}
 
-	
-	
 	public Categoria(Integer id, String nome, String descricao) {
 		super();
 		this.id = id;
@@ -57,9 +62,7 @@ public class Categoria implements Serializable{
 		this.descricao = descricao;
 	}
 	
-	public void setLivros(List<Livro> livros) {
-		this.livros = livros;
-	}
+
 	public List<Livro> getLivros() {
 		return livros;
 	}
