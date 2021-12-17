@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,49 +13,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.bookstore.domain.Categoria;
-import com.bookstore.dtos.CategoriaDTO;
-import com.bookstore.service.CategoriaService;
+import com.bookstore.domain.Livro;
+import com.bookstore.dtos.LivroDTO;
+import com.bookstore.service.LivroService;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoriaResource {
-
+@RequestMapping(value = "/livros")
+public class LivroResource {
+	
 	@Autowired
-	private CategoriaService service;
-
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
-		Categoria obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
-
-	@GetMapping(value = "/")
-	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria> list = service.findAll();
-		List<CategoriaDTO> listDTO = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-
+	private LivroService service;
+	
+	@GetMapping
+	public ResponseEntity<List<LivroDTO>> findAll(@RequestParam(value = "categoria", defaultValue="0") Integer id_cat) {
+		List<Livro> list = service.findAll(id_cat);
+		List<LivroDTO> listDTO = list.stream().map(obj -> new LivroDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-
-	@PostMapping(value = "/")
-	public ResponseEntity<Categoria> create(@RequestBody Categoria obj) {
-		obj = service.create(obj);
-
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-
-		return ResponseEntity.created(uri).body(obj);
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity <Livro> findById(@PathVariable Integer id) {
+		Livro livro = service.findById(id);
+		return ResponseEntity.ok().body(livro);
 	}
-
+	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CategoriaDTO> update(@PathVariable Integer id, @RequestBody CategoriaDTO objDto) {
-		Categoria newObj = service.update(id, objDto);
-
-		return ResponseEntity.ok().body(new CategoriaDTO(newObj));
-
+	public ResponseEntity<LivroDTO> update(@PathVariable Integer id, @RequestBody LivroDTO livroDTO) {
+		Livro obj = service.update(id, livroDTO);
+		return ResponseEntity.ok().body(new LivroDTO(obj));
+	}
+	
+	@PostMapping(value = "/")
+	public ResponseEntity<Livro> create(@RequestBody Livro livro) {
+		Livro obj = service.create(livro);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -64,4 +60,6 @@ public class CategoriaResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+
 }
