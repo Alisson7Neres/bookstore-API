@@ -40,8 +40,8 @@ public class LivroService {
 	
 	private void updateData(Livro newObj, Livro obj) {
 		newObj.setTitulo(obj.getTitulo());
-		newObj.setTitulo(obj.getNome_autor());
-		newObj.setTitulo(obj.getTexto());
+		newObj.setNome_autor(obj.getNome_autor());
+		newObj.setTexto(obj.getTexto());
 		
 	}
 
